@@ -1,5 +1,7 @@
 const express = require('express');
 
+const logger = require('./config/logger');
+
 const app = express();
 
 app.get('/', (req, res, next) => {
@@ -10,15 +12,22 @@ app.get('/', (req, res, next) => {
 
 // No route found handler
 app.use((req, res, next) => {
-  res.status(404);
+  const message = 'Route not found';
+  const statusCode = 404;
+
+  logger.warn(message);
+
+  res.status(statusCode);
   res.json({
-    message: 'Error. route not found',
+    message,
   });
 });
 
 // Error handler
 app.use((error, req, res, next) => {
   const { statusCode = 500, message } = error;
+
+  logger.error(message);
 
   res.status(statusCode);
   res.json({
