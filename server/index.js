@@ -1,5 +1,6 @@
 const express = require('express');
 const { v4: uuidv4 } = require('uuidv4');
+const bodyParser = require('body-parser');
 
 const logger = require('./config/logger');
 const api = require('./api/v1');
@@ -15,6 +16,11 @@ app.use((req, res, next) => {
 
 // Setup middleware
 app.use(logger.requests);
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json());
 
 // Setup router and routes
 app.use('/api/v1', api);
