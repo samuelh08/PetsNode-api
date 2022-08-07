@@ -1,14 +1,19 @@
 const express = require('express');
-const morgan = require('morgan');
+const { v4: uuidv4 } = require('uuidv4');
 
 const logger = require('./config/logger');
 
+// Init app
 const app = express();
 
+// Add unique ID to every request
+app.use((req, res, next) => {
+  req.id = uuidv4();
+  next();
+});
+
 // Setup middleware
-app.use(
-  morgan('combined', { stream: { write: (message) => logger.info(message) } })
-);
+app.use(logger.requests);
 
 app.get('/', (req, res, next) => {
   res.json({
