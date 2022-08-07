@@ -1,9 +1,7 @@
 const router = require('express').Router();
 
-router.route('/pets').get((req, res, next) => {
-  res.json({
-    message: 'GET all pets',
-  });
-});
+const pets = require('./pets/routes');
+
+router.use('/pets', pets);
 
 module.exports = router;
