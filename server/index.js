@@ -2,6 +2,7 @@ const express = require('express');
 const { v4: uuidv4 } = require('uuidv4');
 
 const logger = require('./config/logger');
+const api = require('./api');
 
 // Init app
 const app = express();
@@ -14,6 +15,9 @@ app.use((req, res, next) => {
 
 // Setup middleware
 app.use(logger.requests);
+
+// Setup router and routes
+app.use('/api', api);
 
 app.get('/', (req, res, next) => {
   res.json({
