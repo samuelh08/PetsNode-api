@@ -7,7 +7,13 @@ const config = {
   database: {
     protocol: process.env.DATABASE_PROTOCOL,
     url: process.env.DATABASE_URL,
-    username: process.env.DATABASE_PASSWORD,
+    username: process.env.DATABASE_USERNAME,
+    password: process.env.DATABASE_PASSWORD,
+  },
+  pagination: {
+    limit: 10,
+    skip: 0,
+    page: 1,
   },
 };
 
