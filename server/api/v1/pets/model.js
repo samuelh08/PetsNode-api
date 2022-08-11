@@ -61,11 +61,20 @@ const fields = {
   },
 };
 
-const pet = new Schema(fields, {
+const references = {
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+    required: true,
+  },
+};
+
+const pet = new Schema(Object.assign(fields, references), {
   timestamps: true,
 });
 
 module.exports = {
   Model: mongoose.model('pet', pet),
   fields,
+  references,
 };
