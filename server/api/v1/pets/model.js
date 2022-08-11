@@ -65,4 +65,7 @@ const pet = new Schema(fields, {
   timestamps: true,
 });
 
-module.exports = mongoose.model('pet', pet);
+module.exports = {
+  Model: mongoose.model('pet', pet),
+  fields,
+};
