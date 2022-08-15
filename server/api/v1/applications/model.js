@@ -28,8 +28,19 @@ const application = new Schema(Object.assign(fields, references), {
   timestamps: true,
 });
 
+const virtuals = {
+  applications: {
+    ref: 'reply',
+    localField: '_id',
+    foreignField: 'applicationId',
+  },
+};
+
+application.virtual('reply', virtuals.reply);
+
 module.exports = {
   Model: mongoose.model('application', application),
   fields,
   references,
+  virtuals,
 };
