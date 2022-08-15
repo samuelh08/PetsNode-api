@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { body } = require('express-validator');
 
 const { Schema } = mongoose;
 
@@ -86,9 +87,24 @@ const virtuals = {
 
 pet.virtual('applications', virtuals.applications);
 
+const sanitizers = [
+  body('name').escape(),
+  body('animal').escape(),
+  body('breed').escape(),
+  body('sex').escape(),
+  body('age').escape(),
+  body('description').escape(),
+  body('size').escape(),
+  body('color').escape(),
+  body('trained').toBoolean(),
+  body('vaccinated').toBoolean(),
+  body('esterilized').toBoolean(),
+];
+
 module.exports = {
   Model: mongoose.model('pet', pet),
   fields,
   references,
   virtuals,
+  sanitizers,
 };
