@@ -1,12 +1,22 @@
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const logger = require('./config/logger');
 const api = require('./api/v1');
 
 // Init app
 const app = express();
+
+// setup CORS
+app.use(
+  cors({
+    origin: '*',
+    methods: ['GET', 'PUT', 'POST', 'DELETE'],
+    allowedHeaders: ['Accept', 'Content-Type', 'Authorization'],
+  })
+);
 
 // Add unique ID to every request
 app.use((req, res, next) => {
