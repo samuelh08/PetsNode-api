@@ -6,7 +6,6 @@ const { populateToObject } = require('../../../utils');
 const { Model: User } = require('../users/model');
 
 const referencesNames = Object.getOwnPropertyNames(references);
-
 const virtualsNames = Object.getOwnPropertyNames(virtuals);
 
 exports.parentId = async (req, res, next) => {
@@ -48,7 +47,7 @@ exports.id = async (req, res, next, id) => {
         level: 'warn',
       });
     } else {
-      req.doc(doc);
+      req.doc = doc;
       next();
     }
   } catch (error) {
@@ -82,7 +81,7 @@ exports.all = async (req, res, next) => {
   const { filters, populate } = filterByNested(params, referencesNames);
   const { populateVirtuals } = populateToObject(virtualsNames, virtuals);
 
-  const all = Model.find({})
+  const all = Model.find(filters)
     .sort(sortCompactToStr(sortBy, direction))
     .skip(skip)
     .limit(limit)

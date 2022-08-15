@@ -17,7 +17,7 @@ exports.id = async (req, res, next, id) => {
         level: 'warn',
       });
     } else {
-      req.doc(doc);
+      req.doc = doc;
       next();
     }
   } catch (error) {
