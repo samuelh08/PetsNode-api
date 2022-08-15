@@ -1,5 +1,5 @@
 const express = require('express');
-const { v4: uuidv4 } = require('uuidv4');
+const { v4: uuidv4 } = require('uuid');
 const bodyParser = require('body-parser');
 
 const logger = require('./config/logger');

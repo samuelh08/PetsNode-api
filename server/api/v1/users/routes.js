@@ -2,9 +2,11 @@ const router = require('express').Router();
 const petsRouter = require('../pets/routes');
 const controller = require('./controller');
 
-router.route('/').post(controller.create).get(controller.all);
+router.route('/').get(controller.all);
 
-router.param('id', controller.id);
+router.route('/signup').post(controller.signup);
+
+router.route('/login').post(controller.login);
 
 router
   .route('/:id')

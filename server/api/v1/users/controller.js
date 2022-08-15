@@ -1,31 +1,8 @@
-const { Model, fields, references } = require('./model');
+const { Model, fields } = require('./model');
 const { paginationParseParams } = require('../../../utils');
 const { sortParseParams, sortCompactToStr } = require('../../../utils');
 
-const referencesNames = Object.getOwnPropertyNames(references);
-
-exports.id = async (req, res, next, id) => {
-  const populate = referencesNames.join(' ');
-  try {
-    const doc = await Model.findById(id).populate(populate).exec();
-    if (!doc) {
-      const message = `${Model.modelName} not found`;
-
-      next({
-        message,
-        statusCode: 404,
-        level: 'warn',
-      });
-    } else {
-      req.doc(doc);
-      next();
-    }
-  } catch (error) {
-    next(new Error(error));
-  }
-};
-
-exports.create = async (req, res, next) => {
+exports.signup = async (req, res, next) => {
   const { body = {} } = req;
   const document = new Model(body);
 
@@ -41,17 +18,52 @@ exports.create = async (req, res, next) => {
   }
 };
 
+exports.login = async (req, res, next) => {
+  const { body = {} } = req;
+  const { email = '', password = '' } = body;
+
+  try {
+    const user = await Model.findOne({ email }).exec();
+    if (!user) {
+      const message = 'Email or password are invalid';
+
+      return next({
+        success: false,
+        message,
+        statusCode: 401,
+        level: 'info',
+      });
+    }
+
+    const verified = await user.verifyPassword(password);
+    if (!verified) {
+      const message = 'Email or password are invalid';
+
+      return next({
+        success: false,
+        message,
+        statusCode: 401,
+        level: 'info',
+      });
+    }
+    return res.json({
+      success: true,
+      data: user,
+    });
+  } catch (error) {
+    return next(new Error(error));
+  }
+};
+
 exports.all = async (req, res, next) => {
   const { query = {} } = req;
   const { limit, page, skip } = paginationParseParams(query);
   const { sortBy, direction } = sortParseParams(query, fields);
-  const populate = referencesNames.join(' ');
 
   const all = Model.find({})
     .sort(sortCompactToStr(sortBy, direction))
     .skip(skip)
-    .limit(limit)
-    .populate(populate);
+    .limit(limit);
   const count = Model.countDocuments();
 
   try {
