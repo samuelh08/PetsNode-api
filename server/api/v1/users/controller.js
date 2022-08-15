@@ -2,6 +2,26 @@ const { Model, fields } = require('./model');
 const { paginationParseParams } = require('../../../utils');
 const { sortParseParams, sortCompactToStr } = require('../../../utils');
 
+exports.id = async (req, res, next, id) => {
+  try {
+    const doc = await Model.findById(id).exec();
+    if (!doc) {
+      const message = `${Model.modelName} not found`;
+
+      next({
+        message,
+        statusCode: 404,
+        level: 'warn',
+      });
+    } else {
+      req.doc = doc;
+      next();
+    }
+  } catch (error) {
+    next(new Error(error));
+  }
+};
+
 exports.signup = async (req, res, next) => {
   const { body = {} } = req;
   const document = new Model(body);
