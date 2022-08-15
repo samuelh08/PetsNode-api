@@ -71,10 +71,24 @@ const references = {
 
 const pet = new Schema(Object.assign(fields, references), {
   timestamps: true,
+  toJSON: {
+    virtuals: true,
+  },
 });
+
+const virtuals = {
+  applications: {
+    ref: 'application',
+    localField: '_id',
+    foreignField: 'petId',
+  },
+};
+
+pet.virtual('applications', virtuals.applications);
 
 module.exports = {
   Model: mongoose.model('pet', pet),
   fields,
   references,
+  virtuals,
 };
