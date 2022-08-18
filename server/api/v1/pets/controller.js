@@ -84,14 +84,33 @@ exports.all = async (req, res, next) => {
   const { sortBy, direction } = sortParseParams(query, fields);
   const { filters, populate } = filterByNested(params, referencesNames);
   const { populateVirtuals } = populateToObject(virtualsNames, virtuals);
+  const { name = '', animal = '', sex = '', size = '' } = query;
 
-  const all = Model.find(filters)
+  let completeFilters = filters;
+
+  if (name !== '') {
+    completeFilters = { ...completeFilters, name };
+  }
+
+  if (animal !== '') {
+    completeFilters = { ...completeFilters, animal };
+  }
+
+  if (sex !== '') {
+    completeFilters = { ...completeFilters, sex };
+  }
+
+  if (size !== '') {
+    completeFilters = { ...completeFilters, size };
+  }
+
+  const all = Model.find(completeFilters)
     .sort(sortCompactToStr(sortBy, direction))
     .skip(skip)
     .limit(limit)
     .populate(populate)
     .populate(populateVirtuals);
-  const count = Model.countDocuments(filters);
+  const count = Model.countDocuments(completeFilters);
 
   try {
     const data = await Promise.all([all.exec(), count.exec()]);
