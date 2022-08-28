@@ -84,7 +84,14 @@ exports.all = async (req, res, next) => {
   const { sortBy, direction } = sortParseParams(query, fields);
   const { filters, populate } = filterByNested(params, referencesNames);
   const { populateVirtuals } = populateToObject(virtualsNames, virtuals);
-  const { name = '', animal = '', sex = '', size = '', status = '' } = query;
+  const {
+    name = '',
+    animal = '',
+    sex = '',
+    size = '',
+    age = '',
+    status = '',
+  } = query;
 
   let completeFilters = filters;
 
@@ -96,18 +103,23 @@ exports.all = async (req, res, next) => {
     completeFilters = { ...completeFilters, animal };
   }
 
-  if (sex !== '') {
+  if (sex !== '' && sex !== 'Any') {
     completeFilters = { ...completeFilters, sex };
   }
 
-  if (size !== '') {
+  if (size !== '' && size !== 'Any') {
     completeFilters = { ...completeFilters, size };
+  }
+
+  if (age !== '' && age !== 'Any') {
+    completeFilters = { ...completeFilters, age };
   }
 
   if (status !== '') {
     completeFilters = { ...completeFilters, status };
   }
 
+  console.log(completeFilters);
   const all = Model.find(completeFilters)
     .sort(sortCompactToStr(sortBy, direction))
     .skip(skip)
