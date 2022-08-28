@@ -5,12 +5,19 @@ const applicationsRouter = require('../applications/routes');
 const controller = require('./controller');
 const { auth, owner } = require('../auth');
 const { sanitizers } = require('./model');
+const upload = require('../upload');
 
 router.param('id', controller.id);
 
 router
   .route('/')
-  .post(auth, controller.parentId, sanitizers, controller.create)
+  .post(
+    auth,
+    controller.parentId,
+    sanitizers,
+    upload.single('picture'),
+    controller.create
+  )
   .get(controller.parentId, controller.all);
 
 router

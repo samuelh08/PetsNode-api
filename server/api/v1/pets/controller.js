@@ -56,13 +56,13 @@ exports.id = async (req, res, next, id) => {
 };
 
 exports.create = async (req, res, next) => {
-  const { body = {}, params = {}, decoded = {} } = req;
+  const { body = {}, params = {}, decoded = {}, file = {} } = req;
   const { _id = null } = decoded;
   if (_id) {
     body.userId = _id;
   }
 
-  Object.assign(body, params);
+  Object.assign(body, params, { picture: file.path });
 
   const document = new Model(body);
 
@@ -84,7 +84,7 @@ exports.all = async (req, res, next) => {
   const { sortBy, direction } = sortParseParams(query, fields);
   const { filters, populate } = filterByNested(params, referencesNames);
   const { populateVirtuals } = populateToObject(virtualsNames, virtuals);
-  const { name = '', animal = '', sex = '', size = '' } = query;
+  const { name = '', animal = '', sex = '', size = '', status = '' } = query;
 
   let completeFilters = filters;
 
@@ -102,6 +102,10 @@ exports.all = async (req, res, next) => {
 
   if (size !== '') {
     completeFilters = { ...completeFilters, size };
+  }
+
+  if (status !== '') {
+    completeFilters = { ...completeFilters, status };
   }
 
   const all = Model.find(completeFilters)

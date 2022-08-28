@@ -60,6 +60,15 @@ const fields = {
     required: true,
     default: false,
   },
+  status: {
+    type: String,
+    required: true,
+    default: 'Available',
+  },
+  picture: {
+    type: String,
+    required: true,
+  },
 };
 
 const references = {
