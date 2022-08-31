@@ -36,7 +36,7 @@ const reply = new Schema(Object.assign(fields, references), {
 const sanitizers = [body('message').escape()];
 
 module.exports = {
-  Model: mongoose.model('application', reply),
+  Model: mongoose.model('reply', reply),
   fields,
   references,
   sanitizers,
