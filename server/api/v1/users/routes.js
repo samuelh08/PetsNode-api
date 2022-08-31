@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const petsRouter = require('../pets/routes');
 const applicationsRouter = require('../applications/routes');
+const repliesRouter = require('../replies/routes');
 const controller = require('./controller');
 const { auth, me } = require('../auth');
 const { sanitizers } = require('./model');
@@ -20,5 +21,6 @@ router
 
 router.use('/:userId/pets', petsRouter);
 router.use('/:userId/applications', applicationsRouter);
+router.use('/:userId/replies', repliesRouter);
 
 module.exports = router;
