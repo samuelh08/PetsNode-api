@@ -29,14 +29,14 @@ const references = {
   },
 };
 
-const application = new Schema(Object.assign(fields, references), {
+const reply = new Schema(Object.assign(fields, references), {
   timestamps: true,
 });
 
 const sanitizers = [body('message').escape()];
 
 module.exports = {
-  Model: mongoose.model('application', application),
+  Model: mongoose.model('application', reply),
   fields,
   references,
   sanitizers,
