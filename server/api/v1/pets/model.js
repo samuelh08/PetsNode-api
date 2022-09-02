@@ -92,9 +92,16 @@ const virtuals = {
     localField: '_id',
     foreignField: 'petId',
   },
+  applicationsCount: {
+    ref: 'application',
+    localField: '_id',
+    foreignField: 'petId',
+    count: true,
+  },
 };
 
 pet.virtual('applications', virtuals.applications);
+pet.virtual('applicationsCount', virtuals.applicationsCount);
 
 const sanitizers = [
   body('name').escape(),
