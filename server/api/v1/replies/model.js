@@ -11,7 +11,7 @@ const fields = {
     maxlength: 280,
   },
   answer: {
-    type: Boolean,
+    type: String,
     required: true,
   },
 };
