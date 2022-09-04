@@ -30,7 +30,7 @@ const application = new Schema(Object.assign(fields, references), {
 });
 
 const virtuals = {
-  applications: {
+  reply: {
     ref: 'reply',
     localField: '_id',
     foreignField: 'applicationId',
