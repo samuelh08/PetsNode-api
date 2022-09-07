@@ -26,6 +26,7 @@ const references = {
     type: Schema.Types.ObjectId,
     ref: 'application',
     required: true,
+    unique: true,
   },
 };
 
