@@ -27,6 +27,9 @@ const references = {
 
 const application = new Schema(Object.assign(fields, references), {
   timestamps: true,
+  toJSON: {
+    virtuals: true,
+  },
 });
 
 const virtuals = {
