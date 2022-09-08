@@ -13,6 +13,7 @@ const fields = {
   answer: {
     type: String,
     required: true,
+    trim: true,
   },
 };
 
@@ -34,7 +35,7 @@ const reply = new Schema(Object.assign(fields, references), {
   timestamps: true,
 });
 
-const sanitizers = [body('message').escape()];
+const sanitizers = [body('message').escape(), body('answer').escape()];
 
 module.exports = {
   Model: mongoose.model('reply', reply),
